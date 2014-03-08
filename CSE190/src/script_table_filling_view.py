@@ -30,13 +30,13 @@ for post in range(0, numPosts):
     fList = []
     poster = ""
     
-    cursor.execute("SELECT postedBy FROM Posts WHERE id = '" + str(post) + "'")
+    cursor.execute("SELECT postedBy FROM posts WHERE id = '" + str(post) + "'")
     #poster = cursor.fecthone()  # poster id - from member
     
     for posterID in cursor:
-        poster = posterID
+        poster = posterID[0]
     
-    cursor.execute("SELECT member2 FROM Friends WHERE member1 = '" + str(poster[0]) + "'")
+    cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(poster) + "'")
     
     for friend in cursor:   # populating friend id for THIS Poster
         fList.append(friend[0])
