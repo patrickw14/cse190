@@ -13,7 +13,7 @@ conn = psycopg2.connect(conn_string)
 # conn.cursor will return a cursor object, you can use this cursor to perform queries
 cursor = conn.cursor()
 print ("Connected!\n")
-    
+        
 #######################################################################################
 
 topicString = "topic0"
@@ -21,8 +21,8 @@ spawntopics = 10000
     
 for i in range(1, spawntopics):
     topicString = topicString[:-1]
-    topicString += i
-    cursor.execute("INSERT INTO topics VALUES ('" + topicString + "', 'Some topic name')")
+    topicString += str(i)
+    cursor.execute("INSERT INTO topics VALUES ('" + str(i) + "', 'Some Topic')")
     
 ###############################################################################################
 conn.commit()

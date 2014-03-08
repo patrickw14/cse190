@@ -23,7 +23,7 @@ nameArray = []
     
 for line in file:
     nameArray.append(line)
-    
+     
 numName = len(nameArray)
 
 roundNumber = 5  # number of friend per person
