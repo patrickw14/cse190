@@ -32,9 +32,9 @@ for i in range(0, numName):     # for each member
     fList = []      # Initialize the friend list
     
     for j in range(0, roundNumber):     # make (roundNumber) friends
-        currFriend = random.randrange(0, numName)
+        currFriend = random.randrange(0, numName)   # we use the id not name.
         
-        if(currFriend not in fList or currFriend != i):  # if already have this friend, run again
+        if(currFriend not in fList and currFriend != i):  # if already have this friend, run again
             cursor.execute("INSERT INTO friends VALUES ('" + str(i) + "', '" + str(currFriend) + "', NULL)")
         fList.append(currFriend)
             
