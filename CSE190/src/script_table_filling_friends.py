@@ -1,9 +1,11 @@
 import psycopg2
 import sys
 import random
+import name
+
 
 #Define our connection string
-conn_string = "host='localhost' dbname='CSE190' user='Postgres' password='test'"
+conn_string = "host='localhost' dbname='CSE190' user='" + name.getName() + "' password='test'"
  
 # print the connection string we will use to connect
 print ("Connecting to database ", conn_string, "")
