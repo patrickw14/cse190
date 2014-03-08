@@ -38,7 +38,7 @@ for i in range(0, numName):     # for each member
         
         if(currFriend not in fList and currFriend != i):  # if already have this friend, run again
             cursor.execute("INSERT INTO friends VALUES ('" + str(i) + "', '" + str(currFriend) + "', NULL)")
-        fList.append(currFriend)
+            fList.append(currFriend)
             
 ###############################################################################################
 conn.commit()
