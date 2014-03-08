@@ -18,15 +18,8 @@ cursor = conn.cursor()
 print ("Connected!\n")
     
 #######################################################################################
-filename = "first_names.txt"
-file = open(filename, "r")
-    
-nameArray = []
-    
-for line in file:
-    nameArray.append(line)
-     
-numName = len(nameArray)
+
+numName = 10000
 
 roundNumber = 5  # number of friend per person
 
