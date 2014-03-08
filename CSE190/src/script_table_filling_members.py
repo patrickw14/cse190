@@ -41,6 +41,8 @@ for line in file:
 #cursor.execute("INSERT INTO member VALUES('5', 'name1', 'nation1', 'NULL', 'NULL')")
     
 for name in nameArray:
+    if(m_id == 10000):
+        break
     insertNation = nationArray[random.randrange(1,nationNumber)]
     cursor.execute("INSERT INTO member VALUES ('" + str(m_id) + "', '" + name + "', '" + insertNation + "', NULL, NULL)")
     m_id = m_id + 1
