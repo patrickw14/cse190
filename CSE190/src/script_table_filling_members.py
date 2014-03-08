@@ -22,6 +22,8 @@ print ("Connected!\n")
 filename = "first_names.txt"
 file = open(filename, "r")
     
+random.seed(0xFE4432)    
+    
 nameArray = []
     
 for line in file:
@@ -39,7 +41,7 @@ for line in file:
     nationArray.append(line)
     
 #cursor.execute("INSERT INTO member VALUES('5', 'name1', 'nation1', 'NULL', 'NULL')")
-    
+
 for name in nameArray:
     if(m_id == 10000):
         break

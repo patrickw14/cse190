@@ -23,6 +23,8 @@ numName = 10000
 
 roundNumber = 5  # number of friend per person
 
+random.seed(0xFE4432)
+
 for i in range(0, numName):     # for each member
     fList = []      # Initialize the friend list
     
