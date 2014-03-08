@@ -39,3 +39,7 @@ for i in range(0, numName):     # for each member
         fList.append(currFriend)
             
 ###############################################################################################
+conn.commit()
+
+cursor.close()
+conn.close()

@@ -2,7 +2,7 @@ import psycopg2
 
 
 print("Working?")
-
+ 
 #Define our connection string
 conn_string = "host='localhost' dbname='CSE190' user='Postgres' password='test'"
  

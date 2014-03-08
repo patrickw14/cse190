@@ -25,3 +25,7 @@ for i in range(1, spawntopics):
     cursor.execute("INSERT INTO topics VALUES ('" + topicString + "', 'Some topic name')")
     
 ###############################################################################################
+conn.commit()
+
+cursor.close()
+conn.close()
