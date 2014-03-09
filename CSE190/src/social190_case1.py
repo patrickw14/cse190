@@ -19,7 +19,7 @@ print ("Connected!\n")
     
 #######################################################################################
 
-givenMemberID = 2  # Search target
+givenMemberID = 0  # Search target
 
 fList = []
 rList = []
@@ -27,11 +27,16 @@ rList = []
 cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
 
 for friend in cursor:
-    cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
+    #print("Current Friend id: " + str(friend[0]))
+    fList.append(friend[0])
+    #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
+    
+    '''
     for exist in cursor:
         fList.append(friend[0])
-        print("Friend id: " + str(friend[0]))
+        print("post id: " + str(friend[0]))
         break
+    '''
     
 for poster in fList:
     cursor.execute("SELECT (CAST(t1.id AS float) / t2.id) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2") 

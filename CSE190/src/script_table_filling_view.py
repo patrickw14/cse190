@@ -40,8 +40,10 @@ for post in range(0, numPosts):
     
     for friend in cursor:   # populating friend id for THIS Poster
         fList.append(friend[0])
+    
+    #--- CORRECT....!? ---#
         
-    randNumReader = random.randrange(0, len(fList))
+    randNumReader = random.randrange(0, len(fList))     # deciding how many friends will read this post
     
     for iter in range(0,randNumReader):
         cursor.execute("INSERT INTO view VALUES ('" + str(viewCount) + "', NULL, '" + str(fList[iter]) + "', '" + str(post) + "')")
