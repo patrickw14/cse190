@@ -42,6 +42,8 @@ for post in range(0, numPosts):
         fList.append(friend[0])
     
     #--- CORRECT....!? ---#
+    if len(fList) == 0:
+        continue
         
     randNumReader = random.randrange(0, len(fList))     # deciding how many friends will read this post
     
