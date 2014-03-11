@@ -2,6 +2,7 @@ import psycopg2
 import sys
 import random
 import name
+from datetime import datetime
 
 
 #Define our connection string
@@ -23,7 +24,7 @@ givenMemberID = 0  # Search target
 
 fList = []
 rList = []
-
+startTime = datetime.now()
 cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
 
 for friend in cursor:
@@ -44,9 +45,14 @@ for poster in fList:
         if(ratio[0] != None):
             rList.append(ratio[0])
 
+endTime = datetime.now()
+totalTime = endTime - startTime
+
 for ratio in rList:
     print(str(ratio))
-                
+          
+print "Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime)
+
 ###############################################################################################
 conn.commit()
 
