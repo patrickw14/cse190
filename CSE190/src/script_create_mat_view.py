@@ -33,7 +33,7 @@ cursor.execute("CREATE TABLE mat_view_post2 (posterID int NOT NULL, nation varch
 cursor.execute("CREATE INDEX mat_view_post2_index ON mat_view_post2 (posterID)")
 
 # CREATING MATERIALIZE VIEW THAT HAS A PERSON, HIS FRIENDS, EACH FRIENDS NATION, AND # OF POSTS HE READ FROM THAT PERSON
-cursor.execute("CREATE TABLE mat_view_case2 (readerID int NOT NULL, nation varchar(30), num_of_read int NOT NULL,total_post int NOT NULL, PRIMARY KEY (readerID, nation), FOREIGN KEY (readerID) REFERENCES member)")
+cursor.execute("CREATE TABLE mat_view_case2 (readerID int NOT NULL, friendID int NOT NULL, nation varchar(30), num_of_read int NOT NULL, PRIMARY KEY (readerID, friendID), FOREIGN KEY (readerID) REFERENCES member, FOREIGN KEY (friendID) REFERENCES member)")
 cursor.execute("CREATE INDEX mat_view_case2_index ON mat_view_case2 (readerID)")
 
 print("Materialize View Creation is completed")

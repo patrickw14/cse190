@@ -22,7 +22,7 @@ print ("Connected!\n")
 timelist = []
 
 for givenMemberID in range(0, 10):  # Run for first 10 members in MEMBERS
-    print "Member " + str(givenMemberID) + "..."
+    print ("Member " + str(givenMemberID) + "...")
     fList = []
     rList = []
     startTime = time.time()
@@ -55,7 +55,7 @@ for i in range(0, len(timelist)):
     timeSum += timelist[i]
 
 avgTime = timeSum / len(timelist)
-print "Average time: " + str(avgTime)
+print ("Average time: " + str(avgTime))
 
 ###############################################################################################
 
