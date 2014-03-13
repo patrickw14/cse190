@@ -26,7 +26,7 @@ rList = []
 
 startTime = datetime.now()
 
-cursor.execute("SELECT num_of_read, num_of_post FROM (mat_view_case1) natural join (mat_view_post)")
+cursor.execute("SELECT num_of_read, num_of_post FROM (SELECT * FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "') natural join (mat_view_post)")
 
 for tuple in cursor:
     rList.append(float(tuple[0]) / float(tuple[1]))

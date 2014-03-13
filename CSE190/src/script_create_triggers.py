@@ -39,7 +39,7 @@ cursor.execute("CREATE TRIGGER add_to_case AFTER INSERT ON friends FOR EACH ROW 
 
 # TRIGGERS THAT WILL UPDATE THE TABLES WHEN A VIEW IS CREATED
 # CURRENTLY DOESN"T WORK BECAUSE OF SYNTAX ERROR
-cursor.execute("CREATE OR REPLACE FUNCTION inc_case_fn() RETURNS trigger AS $incrementcase$ BEGIN UPDATE mat_view_case1 SET num_of_post = num_of_post+1 FROM mat_view_post1 m, posts p WHERE m.posterID = NEW.postedBy; UPDATE mat_view_post2 SET num_of_post = num_of_post+1 FROM mat_view_post2 m, posts p WHERE m.posterID = NEW.postedBy; RETURN NEW; END $incrementpost$ LANGUAGE 'plpgsql';")
+cursor.execute("CREATE OR REPLACE FUNCTION inc_case_fn() RETURNS trigger AS $incrementcase$ BEGIN UPDATE mat_view_case1 SET num_of_post = num_of_post+1 FROM mat_view_post1 m, posts p WHERE m.posterID = NEW.postedBy; UPDATE mat_view_post2 SET num_of_post = num_of_post+1 FROM mat_view_post2 m, posts p WHERE m.posterID = NEW.postedBy; RETURN NEW; END $incrementcase$ LANGUAGE 'plpgsql';")
 cursor.execute("CREATE TRIGGER inc_case AFTER INSERT ON view FOR EACH ROW EXECUTE PROCEDURE inc_case_fn();")
 
 print("Trigger Creation is completed")
