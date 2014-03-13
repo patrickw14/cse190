@@ -2,8 +2,7 @@ import psycopg2
 import sys
 import random
 import name
-from datetime import datetime
-
+import time
 
 #Define our connection string
 conn_string = "host='localhost' dbname='CSE190' user='" + name.getName() + "' password='test'"
@@ -20,38 +19,43 @@ print ("Connected!\n")
     
 #######################################################################################
 
-givenMemberID = 0  # Search target
+timelist = []
 
-fList = []
-rList = []
-startTime = datetime.now()
-cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
+for givenMemberID in range(0, 10):  # Run for first 10 members in MEMBERS
+    print "Member " + str(givenMemberID) + "..."
+    fList = []
+    rList = []
+    startTime = time.time()
+    cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
 
-for friend in cursor:
-    #print("Current Friend id: " + str(friend[0]))
-    fList.append(friend[0])
-    #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
-    
-    '''
-    for exist in cursor:
+    for friend in cursor:
+        #print("Current Friend id: " + str(friend[0]))
         fList.append(friend[0])
-        print("post id: " + str(friend[0]))
-        break
-    '''
-    
-for poster in fList:
-    cursor.execute("SELECT (CAST(t1.id AS float) / NULLIF(t2.id,0)) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2") 
-    for ratio in cursor:
-        if(ratio[0] != None):
-            rList.append(ratio[0])
+        #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
+        
+        '''
+        for exist in cursor:
+            fList.append(friend[0])
+            print("post id: " + str(friend[0]))
+            break
+        '''
+        
+    for poster in fList:
+        cursor.execute("SELECT (CAST(t1.id AS float) / NULLIF(t2.id,0)) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2") 
+        for ratio in cursor:
+            if(ratio[0] != None):
+                rList.append(ratio[0])
 
-endTime = datetime.now()
-totalTime = endTime - startTime
+    endTime = time.time()
+    totalTime = endTime - startTime
+    timelist.append(totalTime)
 
-for ratio in rList:
-    print(str(ratio))
-          
-print "Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime)
+timeSum = 0
+for i in range(0, len(timelist)):
+    timeSum += timelist[i]
+
+avgTime = timeSum / len(timelist)
+print "Average time: " + str(avgTime)
 
 ###############################################################################################
 conn.commit()

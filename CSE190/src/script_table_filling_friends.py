@@ -21,7 +21,7 @@ print ("Connected!\n")
 
 numName = 10000
 
-roundNumber = 5  # number of friend per person
+roundNumber = 30  # number of friend per person
 
 random.seed(0xFE4432)
 
