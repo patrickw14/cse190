@@ -22,28 +22,14 @@ print ("Connected!\n")
 
 givenMemberID = 0  # Search target
 
-fList = []
 rList = []
-startTime = datetime.now()
-cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
 
-for friend in cursor:
-    #print("Current Friend id: " + str(friend[0]))
-    fList.append(friend[0])
-    #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
-    
-    '''
-    for exist in cursor:
-        fList.append(friend[0])
-        print("post id: " + str(friend[0]))
-        break
-    '''
-    
-for poster in fList:
-    cursor.execute("SELECT (CAST(t1.id AS float) / NULLIF(t2.id,0)) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2") 
-    for ratio in cursor:
-        if(ratio[0] != None):
-            rList.append(ratio[0])
+startTime = datetime.now()
+
+cursor.execute("SELECT num_of_read, num_of_post FROM (mat_view_case1) natural join (mat_view_post)")
+
+for tuple in cursor:
+    rList.append(float(tuple[0]) / float(tuple[1]))
 
 endTime = datetime.now()
 totalTime = endTime - startTime

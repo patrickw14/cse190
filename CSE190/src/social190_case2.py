@@ -44,8 +44,8 @@ totalTime = endTime - startTime
          
 for ratio in rList:
     print(str(ratio))
-
-print "Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime)
+ 
+print ("Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime))
                 
 ###############################################################################################
 conn.commit()
