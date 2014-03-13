@@ -58,6 +58,7 @@ avgTime = timeSum / len(timelist)
 print "Average time: " + str(avgTime)
 
 ###############################################################################################
+
 conn.commit()
 
 cursor.close()
