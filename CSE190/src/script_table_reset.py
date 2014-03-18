@@ -18,15 +18,19 @@ print ("Connected!\n")
     
 #######################################################################################
 
-cursor.execute("DELETE FROM view;")
-cursor.execute("DELETE FROM posts;")
-cursor.execute("DELETE FROM topics;")
-cursor.execute("DELETE FROM friends;")
-
 cursor.execute("DELETE FROM mat_view_case1;")
 cursor.execute("DELETE FROM mat_view_case2;")
 cursor.execute("DELETE FROM mat_view_post1;")
 cursor.execute("DELETE FROM mat_view_post2;")
+
+cursor.execute("DELETE FROM view;")
+cursor.execute("DELETE FROM posts;")
+cursor.execute("DELETE FROM topics;")
+cursor.execute("DELETE FROM friends;")
+cursor.execute("DELETE FROM member;")
+
+
+print ("Done")
 
 ###############################################################################################
 conn.commit()

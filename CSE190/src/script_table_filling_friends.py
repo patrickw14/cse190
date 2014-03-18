@@ -2,6 +2,7 @@ import psycopg2
 import sys
 import random
 import name
+import time
 
 
 #Define our connection string
@@ -25,11 +26,13 @@ print ("Connected!\n")
 
 ########################################################################################
 
-numName = 10000
+numName = 1000
 
 roundNumber = 30  # number of friend per person
 
 random.seed(0xFE4432)
+
+startTime = time.time()
 
 for i in range(0, numName):     # for each member
     fList = []      # Initialize the friend list
@@ -52,6 +55,12 @@ for i in range(0, numName):     # for each member
             
 ###############################################################################################
 conn.commit()
+
+endTime = time.time()
+totalTime = endTime - startTime
+
+print("Time taken: " + str(totalTime))
+
 
 # Re-enabling the trigger temporarily. Comment if not neeeded
 #cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")

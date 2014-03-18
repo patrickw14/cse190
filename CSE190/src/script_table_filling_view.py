@@ -27,8 +27,8 @@ print ("Connected!\n")
 
 viewCount = 0
 
-numPosts = 100000
-numMember = 10000
+numPosts = 10000
+numMember = 1000
 
 random.seed(0xFE4432)
     

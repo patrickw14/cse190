@@ -25,8 +25,8 @@ print ("Connected!\n")
 
 ########################################################################################
 
-numPosts = 100000
-numMember = 10000
+numPosts = 10000
+numMember = 1000
 numTopic = 10000
 
 random.seed(0xFE4432)
