@@ -2,7 +2,7 @@ import psycopg2
 import sys
 import random
 import name
-from datetime import datetime
+import time
 
 
 #Define our connection string
@@ -22,24 +22,26 @@ print ("Connected!\n")
 
 givenMemberID = 0  # Search target
 
+totalTime = 0
 nList = []
 rList = []
-
-startTime = datetime.now()
 
 cursor.execute("SELECT m.nation FROM member m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.id")
 
 for nation in cursor:
     nList.append(str(nation[0]))
 
-
 for nation in nList:
+    
+    startTime = time.time()
+    
     cursor.execute("SELECT cast(t1.num AS float) / NULLIF(t2.denum, 0) FROM (SELECT SUM(num_of_read) AS NUM FROM mat_view_case2 WHERE readerID  = '" + str(givenMemberID) + "' AND nation = '" + nation + "' GROUP BY nation)t1, (SELECT SUM(num_of_post) AS denum FROM mat_view_post2 m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.posterID AND m.nation = '" + nation + "' GROUP BY m.nation)t2")
+    
+    endTime = time.time()
+    totalTime = totalTime + (endTime - startTime)
+    
     for ratio in cursor:
-        rList.append(str(ratio))
-
-endTime = datetime.now()
-totalTime = endTime - startTime
+        rList.append(str(ratio[0]))
 
 for ratio in rList:
     print(str(ratio))

@@ -19,46 +19,47 @@ print ("Connected!\n")
     
 #######################################################################################
 
+givenMemberID = 1; # the person to search for
+totalTime = 0;
 timelist = []
-print "Query 1..."
+print ("Query 1...")
 rList = []
-for givenMemberID in range(0, 10):  # Run for first 10 members in MEMBERS
-    fList = []
-    startTime = time.time()
-    cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
+fList = []
 
-    for friend in cursor:
-        #print("Current Friend id: " + str(friend[0]))
-        fList.append(friend[0])
-        #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
+startTime = time.time()
+
+cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
+
+for friend in cursor:
+    #print("Current Friend id: " + str(friend[0]))
+    fList.append(friend[0])
+    #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
         
-        '''
-        for exist in cursor:
-            fList.append(friend[0])
-            print("post id: " + str(friend[0]))
-            break
-        '''
+'''
+for exist in cursor:
+    fList.append(friend[0])
+    print("post id: " + str(friend[0]))
+    break
+'''
         
-    for poster in fList:
-        cursor.execute("SELECT (CAST(t1.id AS float) / NULLIF(t2.id,0)) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2") 
-        for ratio in cursor:
-            if(ratio[0] != None):
-                rList.append(ratio[0])
-
-    endTime = time.time()
-    totalTime = endTime - startTime
-    timelist.append(totalTime)
-
-timeSum = 0
-for i in range(0, len(timelist)):
-    timeSum += timelist[i]
+for poster in fList:
+        
+    cursor.execute("SELECT (CAST(t1.id AS float) / NULLIF(t2.id,0)) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2")
+     
+    for ratio in cursor:
+        if(ratio[0] != None):
+            rList.append(ratio[0])
+            
+endTime = time.time()
+    
+totalTime = totalTime + (endTime - startTime)
 
 for ratio in rList:
     print(str(ratio))
+    
+print("# of ratio's: " + str(len(rList)))
 
-avgTime = timeSum / len(timelist)
-print ("Average time: " + str(avgTime))
-print ("Total time: " + str(timeSum))
+print ("Total time: " + str(totalTime))
 
 ###############################################################################################
 

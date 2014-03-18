@@ -2,6 +2,7 @@ import psycopg2
 import sys
 import random
 import name
+import time
 
 
 #Define our connection string
@@ -28,11 +29,13 @@ print ("Connected!\n")
 filename = "first_names.txt"
 file = open(filename, "r")
 
-numName = 10000 #break point to limit the size of the table
+numName = 1000 #break point to limit the size of the table
     
 random.seed(0xFE4432)    
     
 nameArray = []
+
+startTime = time.time()
     
 for line in file:
     nameArray.append(line)
@@ -59,6 +62,11 @@ for name in nameArray:
     
 ###############################################################################################
 conn.commit()
+
+endTime = time.time()
+totalTime = endTime - startTime
+
+print("Time taken: " + str(totalTime))
 
 # Re-enabling the trigger temporarily. Comment if not neeeded
 #cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")

@@ -2,7 +2,7 @@ import psycopg2
 import sys
 import random
 import name
-from datetime import datetime
+import time
 
 #Define our connection string
 conn_string = "host='localhost' dbname='CSE190' user='" + name.getName() + "' password='test'"
@@ -32,14 +32,14 @@ rList = []
 for line in file:
     nationArray.append(line)
 
-startTime = datetime.now()
+startTime = time.time()
 for nation in nationArray:
     cursor.execute("SELECT (CAST(t1.c AS float) / NULLIF(t2.c, 0)) AS v FROM (SELECT count(*) AS c FROM member m, friends f, posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND f.member1 = v.reader AND f.member2 = p.postedBy AND f.member2 = m.id AND m.nation = '" + nation + "')t1, (SELECT count(*) AS c FROM member m, friends f, posts p WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = p.postedBy AND p.postedBy = m.id AND m.nation = '" + nation +"')t2")
     for ratio in cursor:
         if(ratio[0] != None):
             rList.append(ratio[0])
 
-endTime = datetime.now()
+endTime = time.time()
 totalTime = endTime - startTime
          
 for ratio in rList:
