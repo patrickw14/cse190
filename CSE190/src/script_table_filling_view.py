@@ -19,6 +19,12 @@ print ("Connected!\n")
     
 #######################################################################################
 
+# Disabling the trigger temporarily. Comment if not neeeded
+#cursor.execute("ALTER TABLE view DISABLE TRIGGER inc_case")
+#conn.commit()
+
+########################################################################################
+
 viewCount = 0
 
 numPosts = 100000
@@ -50,12 +56,15 @@ for post in range(0, numPosts):
     for iter in range(0,randNumReader):
         cursor.execute("INSERT INTO view VALUES ('" + str(viewCount) + "', NULL, '" + str(fList[iter]) + "', '" + str(post) + "')")
         viewCount += 1
-    
-
-
                 
 ###############################################################################################
 conn.commit()
+
+# Re-enabling the trigger temporarily. Comment if not neeeded
+#cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")
+#conn.commit()
+
+########################################################################################
 
 cursor.close()
 conn.close()
