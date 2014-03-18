@@ -26,7 +26,8 @@ rList = []
 
 startTime = datetime.now()
 
-cursor.execute("SELECT num_of_read, num_of_post FROM (SELECT * FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "') natural join (mat_view_post)")
+cursor.execute("SELECT num_of_read, num_of_post FROM (SELECT * FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "')t1 left join mat_view_post1 t2 ON t1.friendID = t2.posterID")
+#cursor.execute("SELECT (CAST(t1.num AS float) / NULLIF(t2.denom,0)) AS v FROM (SELECT SUM(num_of_read) AS num FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "' GROUP BY readerID)t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2")
 
 for tuple in cursor:
     rList.append(float(tuple[0]) / float(tuple[1]))

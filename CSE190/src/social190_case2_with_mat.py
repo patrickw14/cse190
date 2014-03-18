@@ -27,14 +27,14 @@ rList = []
 
 startTime = datetime.now()
 
-cursor.execute("SELECT .nation FROM member m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.id")
+cursor.execute("SELECT m.nation FROM member m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.id")
 
 for nation in cursor:
-    nList.append(str(nation))
+    nList.append(str(nation[0]))
 
 
 for nation in nList:
-    cursor.execute("SELECT cast(t1.num AS float) / NULLIF(t2.denum, 0) FROM (SELECT SUM(num_of_read) AS NUM FROM mat_view_case2 WHERE ID  = '" + str(givenMemberID) + "' AND nation = '" + str(nation) + "' GROUP BY nation)t1, (SELECT SUM(num_ofpost) AS denum FROM mat_view_post2 m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = p.posterID AND p.nation = '" + str(nation) + "' GROUP BY p.nation)t2")
+    cursor.execute("SELECT cast(t1.num AS float) / NULLIF(t2.denum, 0) FROM (SELECT SUM(num_of_read) AS NUM FROM mat_view_case2 WHERE readerID  = '" + str(givenMemberID) + "' AND nation = '" + nation + "' GROUP BY nation)t1, (SELECT SUM(num_of_post) AS denum FROM mat_view_post2 m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.posterID AND m.nation = '" + nation + "' GROUP BY m.nation)t2")
     for ratio in cursor:
         rList.append(str(ratio))
 

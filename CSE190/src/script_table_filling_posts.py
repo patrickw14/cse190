@@ -19,6 +19,12 @@ print ("Connected!\n")
     
 #######################################################################################
 
+# Disabling the trigger temporarily. Comment if not neeeded
+#cursor.execute("ALTER TABLE view DISABLE TRIGGER inc_case")
+#conn.commit()
+
+########################################################################################
+
 numPosts = 100000
 numMember = 10000
 numTopic = 10000
@@ -32,6 +38,12 @@ for i in range(0, numPosts):
                 
 ###############################################################################################
 conn.commit()
+
+# Re-enabling the trigger temporarily. Comment if not neeeded
+#cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")
+#conn.commit()
+
+########################################################################################
 
 cursor.close()
 conn.close()

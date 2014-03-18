@@ -19,6 +19,12 @@ print ("Connected!\n")
     
 #######################################################################################
 
+# Disabling the trigger temporarily. Comment if not neeeded
+#cursor.execute("ALTER TABLE view DISABLE TRIGGER inc_case")
+#conn.commit()
+
+########################################################################################
+
 numName = 10000
 
 roundNumber = 30  # number of friend per person
@@ -46,6 +52,12 @@ for i in range(0, numName):     # for each member
             
 ###############################################################################################
 conn.commit()
+
+# Re-enabling the trigger temporarily. Comment if not neeeded
+#cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")
+#conn.commit()
+
+########################################################################################
 
 cursor.close()
 conn.close()
