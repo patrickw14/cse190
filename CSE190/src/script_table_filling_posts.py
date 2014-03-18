@@ -2,6 +2,7 @@ import psycopg2
 import sys
 import random
 import name
+import time
 
 
 #Define our connection string
@@ -30,6 +31,8 @@ numMember = 1000
 numTopic = 10000
 
 random.seed(0xFE4432)
+
+startTime = time.time()
     
 for i in range(0, numPosts):
     randTopic = random.randrange(1, numTopic)
@@ -38,6 +41,11 @@ for i in range(0, numPosts):
                 
 ###############################################################################################
 conn.commit()
+
+endTime = time.time()
+totalTime = endTime - startTime
+
+print("Time taken: " + str(totalTime))
 
 # Re-enabling the trigger temporarily. Comment if not neeeded
 #cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")

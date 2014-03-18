@@ -32,7 +32,7 @@ roundNumber = 30  # number of friend per person
 
 random.seed(0xFE4432)
 
-startTime = time.time()
+totalTime = 0
 
 for i in range(0, numName):     # for each member
     fList = []      # Initialize the friend list
@@ -41,9 +41,13 @@ for i in range(0, numName):     # for each member
         currFriend = random.randrange(0, numName)   # we use the id not name.
         
         if(currFriend not in fList and currFriend != i and currFriend > i):  # if already have this friend, run again
+            startTime = time.time()
+            
             cursor.execute("INSERT INTO friends VALUES ('" + str(i) + "', '" + str(currFriend) + "', NULL)")
             cursor.execute("INSERT INTO friends VALUES ('" + str(currFriend) + "', '" + str(i) + "', NULL)")
             
+            endTime = time.time()
+            totalTime = totalTime + (endTime - startTime)
             '''
             try:
                 cursor.execute("INSERT INTO friends VALUES ('" + str(currFriend) + "', '" + str(i) + "', NULL)")
@@ -55,9 +59,6 @@ for i in range(0, numName):     # for each member
             
 ###############################################################################################
 conn.commit()
-
-endTime = time.time()
-totalTime = endTime - startTime
 
 print("Time taken: " + str(totalTime))
 
