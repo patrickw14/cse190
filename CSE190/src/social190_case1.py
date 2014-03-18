@@ -20,10 +20,9 @@ print ("Connected!\n")
 #######################################################################################
 
 timelist = []
+print "Query 1..."
 rList = []
-
 for givenMemberID in range(0, 10):  # Run for first 10 members in MEMBERS
-    print ("Member " + str(givenMemberID) + "...")
     fList = []
     startTime = time.time()
     cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
