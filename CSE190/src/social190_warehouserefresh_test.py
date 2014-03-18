@@ -7,20 +7,7 @@ import time
 insertedRowsSinceLastQuery = 0
 insertQueue = []
 
-def executeInsertRows():
-    for command in insertQueue:
-        cursor.execute(command)
 
-def insertRow(insertCommand):
-    if insertedRowsSinceLastQuery > 30:
-        executeInsertRows()
-    else:
-        insertQueue.append(insertCommand)
-
-def executeQuery(query):
-    if insertedRowsSinceLastQuery != 0:
-        executeInsertRows()
-    cursor.execute(query)
 
 #######################################################################################
 
@@ -38,47 +25,94 @@ cursor = conn.cursor()
 print ("Connected!\n")
     
 #######################################################################################
+totalMembers = 1000
+totalPosts = 10000
+def executeInsertRows():
+    for command in insertQueue:
+        cursor.execute(command)
+        
 
-timelist = []
+def insertRow(insertCommand):
+    if insertedRowsSinceLastQuery > 30:
+        executeInsertRows()
+        insertedRowsSinceLastQuery = 0
+    else:
+        insertQueue.append(insertCommand)
+        insertedRowsSinceLastQuery++
+
+def executeQuery(memberID, friendList):
+    if insertedRowsSinceLastQuery != 0:
+        executeInsertRows()
+    for poster in friendList:
+        #fill in query
+        cursor.execute("")
+
+
+def insertPost():
+    randTopic = random.randrange(1, 10000)
+    randPoster = random.randrange(0, totalMembers)
+    insertRow("INSERT INTO posts VALUES ('" + str(totalPosts) + "', '" + str(randPoster) + "', 'Random Title', 'This is text body', NULL, '" + str(randTopic) + "')")
+    insertRow("UPDATE mat_view_post1 SET num_of_post = num_of_post+1 WHERE posterID = " + str(randPoster))
+    insertRow("UPDATE mat_view_post2 SET num_of_post = num_of_post+1 WHERE posterID = " + str(randPoster))
+    totalPosts++
+
+def insertMember():
+    insertRow("INSERT INTO member VALUES ('" + str(totalMembers) + "', 'John', 'USA', NULL, NULL)")
+    insertRow("INSERT INTO mat_view_post1 VALUES (' + str(totalMembers) + ', 0)")
+    insertRow("INSERT INTO mat_view_post2 VALUES ('" + str(totalMembers) + "', 'USA', 0)")
+    totalMembers++
+
+inserttimelist = []
+querytimelist = []
 
 action = "INSERT"
+random.seed(0xFE4432)
 
-for givenMemberID in range(0, 300):  # Run for first 300 members in MEMBERS
-    print "Member " + str(givenMemberID) + " " + action "..."
+for i in range(0, 300):
+    print str(i) + " " + action "..."
     fList = []
     rList = []
-    startTime = time.time()
     if action == "INSERT":
+        insertType = random.randrange(0,2)
+        startTime = time.time()
+        if insertType == 0:
+            insertMember()
+        elif insertType == 1:
+            insertPost()
+        endTime = time.time()
+        totalTime = endTime - startTime
+        inserttimelist.append(totalTime)
+
+    elif action == "QUERY":
+        fList = []
+        givenMemberID = random.randrange(0, 1000)
+        startTime = time.time()
         cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
-    elif action = "QUERY":
-    for friend in cursor:
-        #print("Current Friend id: " + str(friend[0]))
-        fList.append(friend[0])
-        #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
-        
-        '''
-        for exist in cursor:
+        for friend in cursor:
             fList.append(friend[0])
-            print("post id: " + str(friend[0]))
-            break
-        '''
-        
-    for poster in fList:
-        cursor.execute("SELECT (CAST(t1.id AS float) / NULLIF(t2.id,0)) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2") 
-        for ratio in cursor:
-            if(ratio[0] != None):
-                rList.append(ratio[0])
 
-    endTime = time.time()
-    totalTime = endTime - startTime
-    timelist.append(totalTime)
+        executeQuery(givenMemberID, fList)
+        endTime = time.time()
+        totalTime = endTime - startTime
+        querytimelist.append(totalTime)
 
-timeSum = 0
-for i in range(0, len(timelist)):
-    timeSum += timelist[i]
+    newAction = random.randrange(0, 5)
+    if newAction < 4:
+        action = "INSERT"
+    else:
+        action = "QUERY"
 
-avgTime = timeSum / len(timelist)
-print "Average time: " + str(avgTime)
+insertTimeSum = 0
+for i in range(0, len(inserttimelist)):
+    insertTimeSum += inserttimelist[i]
+
+queryTimeSum = 0
+for i in range(0, len(querytimelist)):
+    queryTimeSum += querytimelist[i]
+
+print "Average insert time: " + str(insertTimeSum / len(inserttimelist))
+print "Average query time: " + str(queryTimeSum / len(querytimelist))
+
 
 ###############################################################################################
 
