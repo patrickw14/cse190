@@ -21,7 +21,7 @@ def executeQuery(query):
     if insertedRowsSinceLastQuery != 0:
         executeInsertRows()
     cursor.execute(query)
-    
+
 #######################################################################################
 
 #Define our connection string
@@ -44,12 +44,13 @@ timelist = []
 action = "INSERT"
 
 for givenMemberID in range(0, 300):  # Run for first 300 members in MEMBERS
-    print "Member " + str(givenMemberID) + "..."
+    print "Member " + str(givenMemberID) + " " + action "..."
     fList = []
     rList = []
     startTime = time.time()
-    cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
-
+    if action == "INSERT":
+        cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
+    elif action = "QUERY":
     for friend in cursor:
         #print("Current Friend id: " + str(friend[0]))
         fList.append(friend[0])

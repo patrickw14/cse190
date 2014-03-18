@@ -20,9 +20,8 @@ print ("Connected!\n")
 #######################################################################################
 
 timelist = []
-
+print "Query 1..."
 for givenMemberID in range(0, 10):  # Run for first 10 members in MEMBERS
-    print ("Member " + str(givenMemberID) + "...")
     fList = []
     rList = []
     startTime = time.time()
