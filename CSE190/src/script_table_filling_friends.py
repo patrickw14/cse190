@@ -21,14 +21,14 @@ print ("Connected!\n")
 #######################################################################################
 
 # Disabling the trigger temporarily. Comment if not neeeded
-#cursor.execute("ALTER TABLE view DISABLE TRIGGER inc_case")
+#cursor.execute("ALTER TABLE friends DISABLE TRIGGER add_to_case")
 #conn.commit()
 
 ########################################################################################
 
-numName = 1000
+numName = 2000
 
-roundNumber = 30  # number of friend per person
+roundNumber = 50  # number of friend per person
 
 random.seed(0xFE4432)
 
@@ -44,7 +44,9 @@ for i in range(0, numName):     # for each member
             startTime = time.time()
             
             cursor.execute("INSERT INTO friends VALUES ('" + str(i) + "', '" + str(currFriend) + "', NULL)")
+            conn.commit()
             cursor.execute("INSERT INTO friends VALUES ('" + str(currFriend) + "', '" + str(i) + "', NULL)")
+            conn.commit()
             
             endTime = time.time()
             totalTime = totalTime + (endTime - startTime)
@@ -64,7 +66,7 @@ print("Time taken: " + str(totalTime))
 
 
 # Re-enabling the trigger temporarily. Comment if not neeeded
-#cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")
+#cursor.execute("ALTER TABLE friends DISABLE TRIGGER add_to_case")
 #conn.commit()
 
 ########################################################################################

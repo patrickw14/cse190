@@ -21,24 +21,24 @@ print ("Connected!\n")
 #######################################################################################
 
 # Disabling the trigger temporarily. Comment if not neeeded
-#cursor.execute("ALTER TABLE view DISABLE TRIGGER inc_case")
+#cursor.execute("ALTER TABLE posts DISABLE TRIGGER inc_post")
 #conn.commit()
 
 ########################################################################################
 
 numPosts = 10000
-numMember = 1000
+numMember = 2000
 numTopic = 10000
 
 random.seed(0xFE4432)
 
 startTime = time.time()
     
-for i in range(0, numPosts):
+for i in range(0, numPosts): 
     randTopic = random.randrange(1, numTopic)
     randPoster = random.randrange(0, numMember)   # we use the id not name.
     cursor.execute("INSERT INTO posts VALUES ('" + str(i) + "', '" + str(randPoster) + "', 'Random Title', 'This is text body', NULL, '" + str(randTopic) + "')" )
-                
+           
 ###############################################################################################
 conn.commit()
 
@@ -48,7 +48,7 @@ totalTime = endTime - startTime
 print("Time taken: " + str(totalTime))
 
 # Re-enabling the trigger temporarily. Comment if not neeeded
-#cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")
+#cursor.execute("ALTER TABLE posts DISABLE TRIGGER inc_post")
 #conn.commit()
 
 ########################################################################################

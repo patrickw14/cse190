@@ -19,7 +19,7 @@ print ("Connected!\n")
     
 #######################################################################################
 
-givenMemberID = 0  # Search target
+givenMemberID = 2  # Search target
 
 filename = "nations.txt"
 file = open(filename, 'r')
@@ -28,6 +28,7 @@ nationArray = []
 nationNumber = 195 # there are 195 nations in the list
 
 rList = []
+tList = []
 
 for line in file:
     nationArray.append(line)
@@ -38,12 +39,16 @@ for nation in nationArray:
     for ratio in cursor:
         if(ratio[0] != None):
             rList.append(ratio[0])
+            tList.append(nation)
 
 endTime = time.time()
 totalTime = endTime - startTime
-         
+
+count = 0
+
 for ratio in rList:
-    print(str(ratio))
+    print("For nation: " + str(tList[count]) + " ratio: " + str(ratio))
+    count = count + 1
  
 print ("Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime))
                 
