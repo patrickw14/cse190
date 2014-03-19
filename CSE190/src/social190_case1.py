@@ -63,7 +63,7 @@ print ("Total time: " + str(totalTime))
 
 ###############################################################################################
 
-conn.commit()
+#conn.commit()
 
 cursor.close()
 conn.close()
