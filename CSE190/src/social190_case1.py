@@ -19,12 +19,13 @@ print ("Connected!\n")
     
 #######################################################################################
 
-givenMemberID = 1; # the person to search for
+givenMemberID = 2; # the person to search for
 totalTime = 0;
 timelist = []
 print ("Query 1...")
 rList = []
 fList = []
+tList = []
 
 startTime = time.time()
 
@@ -48,14 +49,18 @@ for poster in fList:
      
     for ratio in cursor:
         if(ratio[0] != None):
+            tList.append(poster)
             rList.append(ratio[0])
             
 endTime = time.time()
     
 totalTime = totalTime + (endTime - startTime)
 
+counter = 0
+
 for ratio in rList:
-    print(str(ratio))
+    print("For friendID" + str(tList[counter]) + " ratio: " + str(ratio))
+    counter = counter + 1
     
 print("# of ratio's: " + str(len(rList)))
 

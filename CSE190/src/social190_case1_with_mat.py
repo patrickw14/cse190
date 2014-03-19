@@ -26,14 +26,14 @@ rList = []
 
 startTime = time.time()
 
-cursor.execute("SELECT (CAST(num_of_read AS float) / NULLIF(num_of_post,0)) AS v FROM (SELECT * FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "')t1 inner join mat_view_post1 t2 ON t1.friendID = t2.posterID")
+cursor.execute("SELECT (CAST(num_of_read AS float) / NULLIF(num_of_post,0)) AS v, friendID FROM (SELECT * FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "')t1 inner join mat_view_post1 t2 ON t1.friendID = t2.posterID")
 #cursor.execute("SELECT (CAST(t1.num AS float) / NULLIF(t2.denom,0)) AS v FROM (SELECT SUM(num_of_read) AS num FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "' GROUP BY readerID)t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2")
 
 endTime = time.time()
 totalTime = endTime - startTime
 
 for ratio in cursor:
-    print(str(ratio[0]))
+    print("For friendID: " + str(ratio[1]) + " ratio: " + str(ratio[0]))
           
 print ("Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime))
 

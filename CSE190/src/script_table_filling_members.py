@@ -21,7 +21,7 @@ print ("Connected!\n")
 #######################################################################################
 
 # Disabling the trigger temporarily. Comment if not neeeded
-#cursor.execute("ALTER TABLE view DISABLE TRIGGER inc_case")
+#cursor.execute("ALTER TABLE member DISABLE TRIGGER add_to_post")
 #conn.commit()
 
 ########################################################################################
@@ -29,13 +29,12 @@ print ("Connected!\n")
 filename = "first_names.txt"
 file = open(filename, "r")
 
-numName = 1000 #break point to limit the size of the table
+numName = 2000 #break point to limit the size of the table
+totalTime = 0;
     
 random.seed(0xFE4432)    
     
 nameArray = []
-
-startTime = time.time()
     
 for line in file:
     nameArray.append(line)
@@ -57,19 +56,24 @@ for name in nameArray:
     if(m_id == numName):
         break
     insertNation = nationArray[random.randrange(1,nationNumber)]
+    
+    startTime = time.time()
+    
     cursor.execute("INSERT INTO member VALUES ('" + str(m_id) + "', '" + name + "', '" + insertNation + "', NULL, NULL)")
+    conn.commit()
+    
+    endTime = time.time()
+    totalTime = totalTime + (endTime - startTime)
+    
     m_id = m_id + 1
     
 ###############################################################################################
 conn.commit()
 
-endTime = time.time()
-totalTime = endTime - startTime
-
 print("Time taken: " + str(totalTime))
 
 # Re-enabling the trigger temporarily. Comment if not neeeded
-#cursor.execute("ALTER TABLE view ENABLE TRIGGER inc_case")
+#cursor.execute("ALTER TABLE member DISABLE TRIGGER add_to_post")
 #conn.commit()
 
 ########################################################################################

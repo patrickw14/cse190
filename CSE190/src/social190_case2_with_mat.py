@@ -20,11 +20,12 @@ print ("Connected!\n")
     
 #######################################################################################
 
-givenMemberID = 0  # Search target
+givenMemberID = 2  # Search target
 
 totalTime = 0
 nList = []
 rList = []
+tList = []
 
 cursor.execute("SELECT m.nation FROM member m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.id")
 
@@ -42,9 +43,13 @@ for nation in nList:
     
     for ratio in cursor:
         rList.append(str(ratio[0]))
+        tList.append(nation)
+
+count = 0
 
 for ratio in rList:
-    print(str(ratio))
+    print("For nation: " + str(tList[count]) + " ratio: " + str(ratio))
+    count = count + 1
           
 print ("Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime))
 
