@@ -74,7 +74,7 @@ action = "INSERT"
 random.seed(0xFE4432)
 
 for i in range(0, 1000):
-    print str(i) + " " + action + "..."
+    #print str(i) + " " + action + "..."
     fList = []
     rList = []
     if action == "INSERT":
@@ -106,7 +106,7 @@ for i in range(0, 1000):
         timelist.append(totalTime)
 
     newAction = random.randrange(0, 5)
-    if newAction < 4:
+    if newAction < 0:
         action = "INSERT"
     else:
         action = "QUERY"
@@ -119,11 +119,6 @@ queryTimeSum = 0
 for i in range(0, len(querytimelist)):
     queryTimeSum += querytimelist[i]
 
-print str(timelist[894])
-print str(timelist[895])
-print str(timelist[896])
-print str(timelist[897])
-print str(timelist[898])
 print "Over " + str(len(inserttimelist)) + " inserts, Average insert time: " + str(insertTimeSum / len(inserttimelist))
 print "Over " + str(len(querytimelist)) + " queries, Average query time: " + str(queryTimeSum / len(querytimelist))
 
