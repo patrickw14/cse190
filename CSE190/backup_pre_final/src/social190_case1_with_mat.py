@@ -4,6 +4,7 @@ import random
 import name
 import time
 
+
 #Define our connection string
 conn_string = "host='localhost' dbname='CSE190' user='" + name.getName() + "' password='test'"
  
@@ -21,20 +22,21 @@ print ("Connected!\n")
 
 givenMemberID = 2  # Search target
 
-query = "SELECT t1.reader, t2.nation, SUM(t1.readCount) AS totalRead , SUM(t2.postCount) AS totalPosted, (CAST(SUM(t1.readCount) AS float) / NULLIF(SUM(t2.postCount),0)) AS ratio FROM (    SELECT v.reader, p.postedBy, count(*) AS readCount FROM view v, posts p WHERE p.id = v.message AND v.reader = '" + str(givenMemberID) + "' GROUP BY v.reader, p.postedBy ORDER BY postedBy)t1 LEFT JOIN (    SELECT postedBy, m.nation, count(*) AS postCount FROM posts p, member m  WHERE p.postedBY = m.id GROUP BY postedBy, nation ORDER BY postedBy)t2 ON t1.postedBy = t2.postedBy GROUP BY t1.reader, t2.nation"
+rList = []
 
 startTime = time.time()
 
-cursor.execute(query)
+cursor.execute("SELECT (CAST(num_of_read AS float) / NULLIF(num_of_post,0)) AS v, friendID FROM (SELECT * FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "')t1 inner join mat_view_post1 t2 ON t1.friendID = t2.posterID")
+#cursor.execute("SELECT (CAST(t1.num AS float) / NULLIF(t2.denom,0)) AS v FROM (SELECT SUM(num_of_read) AS num FROM mat_view_case1 WHERE readerID = '" + str(givenMemberID) + "' GROUP BY readerID)t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2")
 
 endTime = time.time()
 totalTime = endTime - startTime
 
-for tuple in cursor:
-    print("For nation: " + str(tuple[1]) + " ratio: " + str(tuple[4]))
- 
-print ("Total time: " + str(totalTime))
-                
+for ratio in cursor:
+    print("For friendID: " + str(ratio[1]) + " ratio: " + str(ratio[0]))
+          
+print ("Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime))
+
 ###############################################################################################
 conn.commit()
 

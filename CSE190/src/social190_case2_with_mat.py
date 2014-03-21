@@ -22,36 +22,19 @@ print ("Connected!\n")
 
 givenMemberID = 2  # Search target
 
-totalTime = 0
-nList = []
-rList = []
-tList = []
+query = "SELECT t1.readerID, t2.nation, SUM(t1.num_of_read) AS totalRead, SUM(t2.num_of_post) AS totalPosted, (CAST(SUM(t1.num_of_read) AS float) / NULLIF(SUM(t2.num_of_post),0)) AS ratio FROM (    SELECT * FROM mat_view_case2 WHERE readerID = '" + str(givenMemberID) + "')t1 LEFT JOIN (    SELECT * FROM mat_view_post2)t2 ON t2.posterID = t1.friendID GROUP BY t1.readerID, t2.nation"
 
-cursor.execute("SELECT m.nation FROM member m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.id")
+startTime = time.time()
 
-for nation in cursor:
-    nList.append(str(nation[0]))
+cursor.execute(query)
 
-for nation in nList:
-    
-    startTime = time.time()
-    
-    cursor.execute("SELECT cast(t1.num AS float) / NULLIF(t2.denum, 0) FROM (SELECT SUM(num_of_read) AS NUM FROM mat_view_case2 WHERE readerID  = '" + str(givenMemberID) + "' AND nation = '" + nation + "' GROUP BY nation)t1, (SELECT SUM(num_of_post) AS denum FROM mat_view_post2 m, friends f WHERE f.member1 = '" + str(givenMemberID) + "' AND f.member2 = m.posterID AND m.nation = '" + nation + "' GROUP BY m.nation)t2")
-    
-    endTime = time.time()
-    totalTime = totalTime + (endTime - startTime)
-    
-    for ratio in cursor:
-        rList.append(str(ratio[0]))
-        tList.append(nation)
+endTime = time.time()
+totalTime = endTime - startTime
 
-count = 0
-
-for ratio in rList:
-    print("For nation: " + str(tList[count]) + " ratio: " + str(ratio))
-    count = count + 1
+for ratio in cursor:
+    print("For readerID: " + str(ratio[0]) + " For nation: " + str(ratio[1]) + " ratio: " + str(ratio[4]))
           
-print ("Start time = " + str(startTime) + " End time = " + str(endTime) + " Total time = " + str(totalTime))
+print ("Total time = " + str(totalTime))
 
 ###############################################################################################
 conn.commit()

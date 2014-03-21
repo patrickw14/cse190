@@ -1,0 +1,61 @@
+///////////////////////QUERY1 WITHOUT MATERIALIZED VIEW///////////////////////////
+
+SELECT t1.reader, t1.postedBy, t1.readCount, t2.postCount, (CAST(t1.readCount AS float) / NULLIF(t2.postCount,0)) AS ratio
+FROM (	SELECT v.reader, p.postedBy, count(*) AS readCount
+	FROM view v, posts p
+	WHERE p.id = v.message AND
+		v.reader = 'GIVEN_MEMBER_ID'
+	GROUP BY v.reader, p.postedBy
+	ORDER BY postedBy
+	)t1 LEFT JOIN 
+     (	SELECT postedBy, count(*) AS postCount
+	FROM posts
+	GROUP BY postedBy
+	ORDER BY postedBy
+     )t2 ON t1.postedBy = t2.postedBy
+
+//////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////// QUERY2 WITHOUT MATERIALIZED VIEW ////////////////////////////
+
+SELECT t1.reader, t2.nation, SUM(t1.readCount) AS totalRead , SUM(t2.postCount) AS totalPosted, (CAST(SUM(t1.readCount) AS float) / NULLIF(SUM(t2.postCount),0)) AS ratio
+FROM (	SELECT v.reader, p.postedBy, count(*) AS readCount
+	FROM view v, posts p
+	WHERE p.id = v.message AND
+		v.reader = 'GIVEN_MEMBER_ID'
+	GROUP BY v.reader, p.postedBy
+	ORDER BY postedBy
+	)t1 LEFT JOIN 
+     (	SELECT postedBy, m.nation, count(*) AS postCount
+	FROM posts p, member m
+	WHERE p.postedBY = m.id
+	GROUP BY postedBy, nation
+	ORDER BY postedBy
+     )t2 ON t1.postedBy = t2.postedBy
+GROUP BY t1.reader, t2.nation
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////// QUERY1 USING MATERIALIZED viEW /////////////////////////
+SELECT readerID, friendID, (CAST(num_of_read AS float) / NULLIF(num_of_post,0)) AS ratio
+FROM (	SELECT * 
+	FROM mat_view_case1 
+	WHERE readerID = 'GIVEN_MEMBER_ID'
+     )t1 inner join mat_view_post1 t2 
+     ON t1.friendID = t2.posterID
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////// QUERY2 USING MATERIALIZED VIEW ////////////////////////
+SELECT t1.readerID, t2.nation, SUM(t1.num_of_read) AS totalRead, SUM(t2.num_of_post) AS totalPosted, (CAST(SUM(t1.num_of_read) AS float) / NULLIF(SUM(t2.num_of_post),0)) AS ratio
+FROM (	SELECT *
+	FROM mat_view_case2
+	WHERE readerID = 'GIVEN_MEMBER_ID'
+     )t1 LEFT JOIN
+     (	SELECT *
+	FROM mat_view_post2
+     )t2 ON t2.posterID = t1.friendID
+GROUP BY t1.readerID, t2.nation
+///////////////////////////////////////////////////////////////////////////////////////

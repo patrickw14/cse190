@@ -1,2 +1,2 @@
 def getName():
-	return "postgres"
+	return "Postgres"

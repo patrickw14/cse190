@@ -20,50 +20,20 @@ print ("Connected!\n")
 #######################################################################################
 
 givenMemberID = 2; # the person to search for
-totalTime = 0;
-timelist = []
-print ("Query 1...")
-rList = []
-fList = []
-tList = []
+
+query = "SELECT t1.reader, t1.postedBy, t1.readCount, t2.postCount, (CAST(t1.readCount AS float) / NULLIF(t2.postCount,0)) AS ratio FROM (    SELECT v.reader, p.postedBy, count(*) AS readCount FROM view v, posts p WHERE p.id = v.message AND v.reader = '" + str(givenMemberID) + "' GROUP BY v.reader, p.postedBy ORDER BY postedBy)t1 LEFT JOIN(    SELECT postedBy, count(*) AS postCount FROM posts GROUP BY postedBy ORDER BY postedBy)t2 ON t1.postedBy = t2.postedBy"
 
 startTime = time.time()
 
-cursor.execute("SELECT member2 FROM friends WHERE member1 = '" + str(givenMemberID) + "'")
+cursor.execute(query)
 
-for friend in cursor:
-    #print("Current Friend id: " + str(friend[0]))
-    fList.append(friend[0])
-    #cursor.execute("SELECT id FROM posts WHERE postedBy = '" + str(friend[0]) + "'")
-        
-'''
-for exist in cursor:
-    fList.append(friend[0])
-    print("post id: " + str(friend[0]))
-    break
-'''
-        
-for poster in fList:
-        
-    cursor.execute("SELECT (CAST(t1.id AS float) / NULLIF(t2.id,0)) AS v FROM (SELECT count(p.id) AS id FROM posts p, view v WHERE v.reader = '" + str(givenMemberID) + "' AND v.message = p.id AND p.postedBY = '" + str(poster) + "')t1, (SELECT count(id) AS id FROM posts WHERE PostedBy = '" + str(poster) + "')t2")
-     
-    for ratio in cursor:
-        if(ratio[0] != None):
-            tList.append(poster)
-            rList.append(ratio[0])
-            
 endTime = time.time()
+
+totalTime = endTime - startTime
+
+for tuple in cursor:
+    print("For friendID" + str(tuple[1]) + " ratio: " + str(tuple[4]))
     
-totalTime = totalTime + (endTime - startTime)
-
-counter = 0
-
-for ratio in rList:
-    print("For friendID" + str(tList[counter]) + " ratio: " + str(ratio))
-    counter = counter + 1
-    
-print("# of ratio's: " + str(len(rList)))
-
 print ("Total time: " + str(totalTime))
 
 ###############################################################################################
